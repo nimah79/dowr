@@ -2,22 +2,31 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Word;
+use App\Models\WordCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $wordCategoryIds = [];
+        foreach (fastexcel()->import(__DIR__.'/data/word_categories.csv') as $row) {
+            $wordCategoryIds[$row['id']] = WordCategory::firstOrCreate([
+                'name' => $row['name'],
+            ])->id;
+        }
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach (fastexcel()->import(__DIR__.'/data/words.csv') as $row) {
+            Word::firstOrCreate(
+                [
+                    'name' => $row['name'],
+                ],
+                [
+                    'word_category_id' => $wordCategoryIds[$row['word_category_id']],
+                    'difficulty' => $row['difficulty'],
+                ],
+            );
+        }
     }
 }
