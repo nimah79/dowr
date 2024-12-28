@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\WordCategory;
@@ -25,7 +27,7 @@ class CreateGame extends Component
         $categoryIds = array_keys(
             array_filter($this->selectedCategories)
         );
-        if (empty($categoryIds)) {
+        if ($categoryIds === []) {
             $categoryIds = $this->categories
                 ->pluck('id')
                 ->toArray();

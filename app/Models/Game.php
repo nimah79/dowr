@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
- * @property string|null $started_at
+ * @property \Illuminate\Support\Carbon|null $started_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameUserWord> $gameUserWords
@@ -26,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereUpdatedAt($value)
  *
  * @property int $user_id
- * @property int $is_on_left_users
+ * @property bool $is_on_left_users
  * @property int $turn_index
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\WordCategory> $categories
  * @property-read int|null $categories_count
@@ -38,31 +40,44 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class Game extends Model
+final class Game extends Model
 {
     public function casts(): array
     {
         return [
+            'started_at' => 'datetime',
             'turn_index' => 'integer',
             'is_on_left_users' => 'boolean',
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Team, $this>
+     */
     public function teams(): HasMany
     {
         return $this->hasMany(Team::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GameUserWord, $this>
+     */
     public function gameUserWords(): HasMany
     {
         return $this->hasMany(GameUserWord::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\WordCategory, $this>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(WordCategory::class);

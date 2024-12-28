@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+arch('models')
+    ->expect('App\Models')
+    ->toHaveMethod('casts')
+    ->toExtend(\Illuminate\Database\Eloquent\Model::class)
+    ->toOnlyBeUsedIn([
+        'App\Concerns',
+        'App\Console',
+        'App\Events',
+        'App\Exports',
+        'App\Filament',
+        'App\Http',
+        'App\Jobs',
+        'App\Listeners',
+        'App\Livewire',
+        'App\Observers',
+        'App\Mail',
+        'App\Models',
+        'App\Notifications',
+        'App\Policies',
+        'App\Providers',
+        'App\Queries',
+        'App\Rules',
+        'App\RedisResolvers',
+        'App\Services',
+        'App\View\Creators',
+        'Database\Factories',
+        'Database\Seeders',
+    ])
+    ->ignoring('App\Nova');

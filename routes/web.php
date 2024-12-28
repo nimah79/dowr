@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/register', \App\Livewire\RegisterForm::class)
     ->name('login');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::get('/', \App\Livewire\CreateGame::class)
         ->name('game.create');
 

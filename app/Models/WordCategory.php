@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +25,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class WordCategory extends Model
+final class WordCategory extends Model
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Word, $this>
+     */
     public function words(): HasMany
     {
         return $this->hasMany(Word::class);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -41,7 +43,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -76,6 +78,9 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Game, $this>
+     */
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
@@ -87,6 +92,9 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GameUserWord, $this>
+     */
     public function gameUserWords(): HasMany
     {
         return $this->hasMany(GameUserWord::class);

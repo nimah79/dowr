@@ -1,0 +1,12 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+parameters:
+    paths:
+        - app
+        - bootstrap
+        - config
+        - database/factories
+        - routes
+    level: 5
+    ignoreErrors:
+    excludePaths:

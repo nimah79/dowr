@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Events\WordSolved;
@@ -63,13 +65,13 @@ class GamePage extends Component
 
     public function getWord(): void
     {
-        $word = Word::whereHas('gameUserWords', function (Builder $query) {
+        $word = Word::whereHas('gameUserWords', function (Builder $query): void {
             $query->whereBelongsTo($this->game)
                 ->whereNull('solved_at');
         })
             ->first();
         if (is_null($word)) {
-            $word = Word::whereDoesntHave('gameUserWords', function (Builder $query) {
+            $word = Word::whereDoesntHave('gameUserWords', function (Builder $query): void {
                 $query->whereBelongsTo($this->game);
             })
                 ->inRandomOrder()
@@ -106,7 +108,7 @@ class GamePage extends Component
         $gameUserWord->save();
 
         $team = $this->teams[$this->game->turn_index];
-        $team->remaining_time = $team->remaining_time - $gameUserWord->created_at->diffInSeconds($solvedAt);
+        $team->remaining_time -= $gameUserWord->created_at->diffInSeconds($solvedAt);
         $team->save();
 
         if ($this->game->turn_index === $this->teams->count() - 1) {

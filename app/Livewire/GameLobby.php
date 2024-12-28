@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Events\GameStarted;
@@ -35,7 +37,7 @@ class GameLobby extends Component
     public function mount(): void
     {
         $alreadyJoined = Team::whereBelongsTo($this->game)
-            ->whereHas('users', function (Builder $query) {
+            ->whereHas('users', function (Builder $query): void {
                 $query->where('users.id', auth()->id());
             })
             ->exists();
@@ -52,7 +54,7 @@ class GameLobby extends Component
                     'remaining_time' => Config::integer('game.initial_remaining_time'),
                 ]);
             }
-            $team->users()->syncWithoutDetaching(auth()->id());
+            $team->users()->syncWithoutDetaching([auth()->id()]);
         }
         $this->getTeams();
     }
@@ -67,7 +69,7 @@ class GameLobby extends Component
 
     public function shuffleUsers(): void
     {
-        $users = User::whereHas('teams', function (Builder $query) {
+        $users = User::whereHas('teams', function (Builder $query): void {
             $query->whereBelongsTo($this->game);
         })
             ->pluck('id')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class Word extends Model
+final class Word extends Model
 {
     use HasFactory;
 
@@ -41,11 +43,17 @@ class Word extends Model
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\WordCategory, $this>
+     */
     public function wordCategory(): BelongsTo
     {
         return $this->belongsTo(WordCategory::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GameUserWord, $this>
+     */
     public function gameUserWords(): HasMany
     {
         return $this->hasMany(GameUserWord::class);

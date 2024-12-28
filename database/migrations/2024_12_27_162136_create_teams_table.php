@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Game::class)
                 ->constrained()

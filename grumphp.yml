@@ -1,0 +1,49 @@
+grumphp:
+    extensions:
+        - YieldStudio\GrumPHPLaravelPint\ExtensionLoader
+    process_timeout: 3600
+    tasks:
+        phpstan:
+            configuration: phpstan.neon
+            memory_limit: "4G"
+            use_grumphp_paths: false
+        laravel_pint:
+            config: pint.json
+            preset: laravel
+        conventional_commit:
+            enforce_capitalized_subject: false
+            max_subject_width: 120
+            max_body_width: 120
+            type_scope_conventions:
+                types:
+                    - build
+                    - docs
+                    - chore
+                    - ci
+                    - feat
+                    - fix
+                    - perf
+                    - refactor
+                    - revert
+                    - style
+                    - test
+            matchers:
+                Must follow conventional commit syntax: "/^(?:build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\-\\.]+\\))?\\!?: (?:[\\w ])+(?:[\\s\\S]*)$/"
+            metadata:
+                task: git_commit_message
+        pest:
+            config_file: ~
+            testsuite: ~
+            group: []
+            always_execute: false
+        type_coverage:
+            script: test:type-coverage
+            triggered_by: [php]
+            metadata:
+                task: composer_script
+        rector:
+            config: null
+            triggered_by: ['php']
+            ignore_patterns: []
+            clear_cache: true
+            no_diffs: false

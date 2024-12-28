@@ -24,3 +24,4 @@ yarn-error.log
 **/.DS_Store
 rr
 .rr.yaml
+.pest_type_coverage_cache

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Eloquent
  */
-class GameUserWord extends Model
+final class GameUserWord extends Model
 {
     protected $fillable = [
         'game_id',
@@ -47,16 +49,25 @@ class GameUserWord extends Model
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Game, $this>
+     */
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Word, $this>
+     */
     public function word(): BelongsTo
     {
         return $this->belongsTo(Word::class);
