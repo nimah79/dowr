@@ -123,7 +123,7 @@ class GamePage extends Component
                     break;
                 }
             }
-            if (! is_null($nextTeamIndex)) {
+            if (is_null($nextTeamIndex)) {
                 for ($i = 0; $i < $this->game->turn_index; $i++) {
                     if ($this->teams[$i]->remaining_time > 0) {
                         $nextTeamIndex = $i;
