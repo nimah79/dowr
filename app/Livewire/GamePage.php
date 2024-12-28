@@ -72,6 +72,7 @@ class GamePage extends Component
             $word = Word::whereDoesntHave('gameUserWords', function (Builder $query) {
                 $query->whereBelongsTo($this->game);
             })
+                ->inRandomOrder()
                 ->first();
             if (is_null($word)) {
                 abort(418);
