@@ -66,6 +66,6 @@ COPY docker-entrypoint.sh /var/www/html/docker-entrypoint.sh
 
 RUN chmod +x /var/www/html/docker-entrypoint.sh
 
-EXPOSE 80
+EXPOSE 80 8090
 
 ENTRYPOINT ["/bin/bash", "/var/www/html/docker-entrypoint.sh"]
