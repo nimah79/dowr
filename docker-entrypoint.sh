@@ -2,6 +2,7 @@
 
 touch /var/www/html/database/database.sqlite
 php artisan migrate --force
+php artisan db:seed
 php artisan storage:link
 php artisan cache:clear
 php artisan config:cache
