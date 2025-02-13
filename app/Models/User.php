@@ -86,6 +86,9 @@ final class User extends Authenticatable
         return $this->hasMany(Game::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Team, $this>
+     */
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class)
