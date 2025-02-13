@@ -1,12 +1,13 @@
 #!/bin/bash
 
 touch /var/www/html/database/database.sqlite
-php artisan migrate --force --isolated
+php artisan migrate --force
 php artisan storage:link
 php artisan cache:clear
 php artisan config:cache
 php artisan route:cache
 php artisan event:cache
+npm run build
 
 chown -R www-data:www-data /var/www
 
