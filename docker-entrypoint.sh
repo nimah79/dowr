@@ -1,5 +1,6 @@
 #!/bin/bash
 
+touch /var/www/html/database/database.sqlite
 php artisan migrate --force --isolated
 php artisan storage:link
 php artisan cache:clear
