@@ -1,0 +1,81 @@
+map $upstream_http_location $_upstream_http_location_prefix {
+    default $upstream_http_location;
+    "~^/"                 "/blog";
+    "~*^http"             "";
+    "~*^((?!http|\/).)*"  "/blog/";
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html/public;
+
+    index index.php;
+
+    server_name _;
+
+    # limit_req_status 429;
+    # limit_conn_status 429;
+
+    error_page 429 /429.html;
+    location = /429.html {
+        internal;
+    }
+
+    location /index.php {
+        try_files /not_exists @octane;
+    }
+
+    location / {
+        try_files $uri $uri/ @octane;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    location /blog/wp-admin {
+        return 301 /blog/404;
+    }
+
+    location /blog/wp-login.php {
+        return 301 /blog/404;
+    }
+
+    location /blog/robots.txt {
+        return 404;
+    }
+
+    location ~* \.(ico|css|gif|jpeg|jpg|png|woff|ttf|otf|svg|woff2|eot)$ {
+        access_log off;
+        expires 365d;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+
+    location @octane {
+        # limit_req zone=ip_throttle burst=50 nodelay;
+        # limit_conn ip_conn 50;
+
+        set $suffix "";
+ 
+        if ($uri = /index.php) {
+            set $suffix ?$query_string;
+        }
+ 
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header Scheme $scheme;
+        proxy_set_header SERVER_PORT $server_port;
+        proxy_set_header REMOTE_ADDR $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+ 
+        proxy_pass http://127.0.0.1:8000$suffix;
+    }
+}
